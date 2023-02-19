@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using P133Allup.DataAccessLayer;
 using P133Allup.Models;
 using P133Allup.ViewModels.BasketViewModels;
+using System.Collections.Generic;
 
 namespace P133Allup.Controllers
 {
@@ -34,18 +35,20 @@ namespace P133Allup.Controllers
 
             string basket = HttpContext.Request.Cookies["basket"];
 
+            List<BasketVM> basketVMs = null;
+
+
             if (string.IsNullOrWhiteSpace(basket))
             {
-                List<BasketVM> basketVMs = new List<BasketVM>
+                 basketVMs = new List<BasketVM>
                 {
                    new BasketVM {Id= (int)id,Count=1}
                 };
-                string strProducts = JsonConvert.SerializeObject(basketVMs);
-                HttpContext.Response.Cookies.Append("basket", strProducts);
+                
             }
             else
             {
-                List<BasketVM> basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+                 basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
 
                 if (basketVMs.Exists(b=>b.Id == id))
                 {
@@ -55,11 +58,27 @@ namespace P133Allup.Controllers
                 {
                     basketVMs.Add(new BasketVM { Id= (int)id,Count=1});
                 }
-                string strProducts=JsonConvert.SerializeObject(basketVMs);
-
-                HttpContext.Response.Cookies.Append("basket", strProducts);
             }
-            return Ok();
+
+
+            basket = JsonConvert.SerializeObject(basketVMs);
+
+            HttpContext.Response.Cookies.Append("basket", basket);
+
+            foreach (BasketVM basketVM in basketVMs)
+            {
+                Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == basketVM.Id && p.IsDeleted == false);
+
+                if (product != null)
+                {
+                    basketVM.ExTax = product.ExTax;
+                    basketVM.Price = product.DiscountedPrice > 0 ? product.DiscountedPrice : product.Price;
+                    basketVM.Title = product.Title;
+                    basketVM.Image = product.MainImage;
+                }
+            }
+
+            return PartialView("_BasketPartial",basketVMs);
         }
         public async Task<IActionResult> GetBasket()
         {
