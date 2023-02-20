@@ -19,7 +19,23 @@ namespace P133Allup.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            string basket = HttpContext.Request.Cookies["basket"];
+            List<BasketVM> basketVMs = null;
+            if (basket != null)
+            {
+                basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+            }
+            else
+            {
+                basketVMs = new List<BasketVM>();
+            }
+            foreach (BasketVM basketVM in basketVMs)
+            {
+                basketVM.Title = _context.Products.FirstOrDefault(p => p.Id == basketVM.Id).Title;
+                basketVM.Image = _context.Products.FirstOrDefault(p => p.Id == basketVM.Id).MainImage;
+                basketVM.Price = _context.Products.FirstOrDefault(p => p.Id == basketVM.Id).Price;
+            }
+            return View(basketVMs);
         }
 
 

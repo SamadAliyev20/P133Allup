@@ -1,5 +1,18 @@
 ﻿$(document).ready(function () {
 
+    $('.productCount').keyup(function () {
+        
+
+        let count = $(this).val();
+        let productId = $(this).attr('data-productId');
+
+        fetch('/Product/ChangeBasketProductCount/' + productId + '?count=' + count).then(res => {
+            return res.text();
+        }).then(data => {
+            $(".productTable").html(data);
+        })
+    })
+
     $('.addToBasket').click(function myfunction(e) {
         e.preventDefault();
 

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<BasketVM>
 
 <div class="cart-btn">
-    <a href="#">
+    <a asp-controller="Basket">
         <i class="icon ion-bag"></i>
         <span class="text">Cart :</span>
         <span class="total">$@Model.Sum(b=>b.Count * b.Price)</span>

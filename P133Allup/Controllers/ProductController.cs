@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using P133Allup.DataAccessLayer;
 using P133Allup.Models;
+using P133Allup.ViewModels.BasketViewModels;
 
 namespace P133Allup.Controllers
 {
@@ -52,6 +54,37 @@ namespace P133Allup.Controllers
                  (p.Title.ToLower().Contains(search.ToLower()) || p.Brand.Name.ToLower().Contains(search.ToLower()))).ToListAsync();
 
             return PartialView("_SearchPartial",products);
+        }
+        public IActionResult ChangeBasketProductCount(int? id, int count)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            if (!_context.Products.Any(p => p.Id == id))
+            {
+                return NotFound();
+            }
+            string basket = HttpContext.Request.Cookies["basket"];
+            List<BasketVM> basketVMs = null;
+            if (basket != null)
+            {
+                basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+                basketVMs.Find(p => p.Id == id).Count = count;
+                basket = JsonConvert.SerializeObject(basketVMs);
+                HttpContext.Response.Cookies.Append("basket", basket);
+                foreach (BasketVM basketVM in basketVMs)
+                {
+                    basketVM.Title = _context.Products.FirstOrDefault(p => p.Id == basketVM.Id).Title;
+                    basketVM.Image = _context.Products.FirstOrDefault(p => p.Id == basketVM.Id).MainImage;
+                    basketVM.Price = _context.Products.FirstOrDefault(p => p.Id == basketVM.Id).Price;
+                }
+                return PartialView("_BasketProductTablePartial", basketVMs);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
     }
