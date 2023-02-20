@@ -1,0 +1,23 @@
+﻿@model Brand
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row justify-content-start">
+    <div class="col-lg-2">
+        <h1 class="h3 mb-4 text-gray-800">Brand Create Page</h1>
+    </div>
+    </div>
+<div class="row justify-content-start">
+        <div class="col-lg-2">
+        <form  method="post">
+  <div class="form-group">
+      <label asp-for="Name" class="form-label"></label>
+     <input asp-for="Name" class="form-control">
+     <span class="text text-danger" asp-validation-for="Name"></span>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+        </div>
+    </div>
+
