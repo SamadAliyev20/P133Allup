@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -59,6 +58,12 @@
                 <a class="nav-link" asp-action="index" asp-area="manage" asp-controller="brand">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Brands</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" asp-action="index" asp-area="manage" asp-controller="Category">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Category</span>
                 </a>
             </li>
 
@@ -343,7 +348,7 @@
     <!-- Page level custom scripts -->
     <script src="~/manage/js/demo/chart-area-demo.js"></script>
     <script src="~/manage/js/demo/chart-pie-demo.js"></script>
-
+    <script src="~/manage/js/custom.js" asp-append-version="true"></script>   
 </body>
 
 </html>
