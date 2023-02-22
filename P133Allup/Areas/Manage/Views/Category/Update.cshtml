@@ -1,0 +1,42 @@
+﻿@model Category
+@{
+	ViewData["Title"] = "Update";
+	IEnumerable<Category> categories = ViewBag.Categories;
+}
+
+<div class="row justify-content-start">
+	<div class="col-lg-2">
+		<h1 class="h3 mb-4 text-gray-800">Category Update Page</h1>
+	</div>
+</div>
+<div class="row justify-content-start">
+	<div class="col-lg-2">
+		<form method="post" enctype="multipart/form-data">
+			<div class="mb-3 form-check">
+				<input asp-for="IsMain" class="form-check-input">
+				<label asp-for="IsMain" class="form-check-label"></label>
+				<span class="text text-danger" asp-validation-for="IsMain"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Name" class="form-label"></label>
+				<input asp-for="Name" class="form-control">
+				<span class="text text-danger" asp-validation-for="Name"></span>
+			</div>
+			<div id="fileInput" class="mb-3 d-none">
+				<label asp-for="File" class="form-label">Default file input example</label>
+				<input asp-for="File" class="form-control" accept="image/jpeg">
+				<span class="text text-danger" asp-validation-for="File"></span>
+			</div>
+			<div id="parentList">
+				<div class="input-group mb-3">
+					<select asp-for="ParentId" class="custom-select" asp-items="new SelectList(ViewBag.Categories,nameof(Category.Id),nameof(Category.Name),Model.ParentId)">
+					</select>
+					<span class="text text-danger" asp-validation-for="ParentId"></span>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-primary mt-1">Submit</button>
+		</form>
+	</div>
+</div>
+

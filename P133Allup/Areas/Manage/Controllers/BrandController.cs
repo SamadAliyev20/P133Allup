@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using P133Allup.DataAccessLayer;
 using P133Allup.Models;
+using P133Allup.ViewModels;
 using System.Drawing.Drawing2D;
 
 namespace P133Allup.Areas.Manage.Controllers
@@ -16,13 +17,12 @@ namespace P133Allup.Areas.Manage.Controllers
             _context = context;
         }
 
-        public async Task <IActionResult> Index()
+        public async Task <IActionResult> Index(int pageIndex=1)
         {
-            IEnumerable <Brand> brands = await _context.Brands
-                .Include(p=>p.Products.Where(p=>p.IsDeleted==false))
-                .Where(p=>p.IsDeleted==false).OrderByDescending(b=>b.Id)
-                .ToListAsync();
-            return View(brands);
+            IQueryable<Brand> brands = _context.Brands
+                .Include(p => p.Products.Where(p => p.IsDeleted == false))
+                .Where(p => p.IsDeleted == false).OrderByDescending(b => b.Id);
+            return View(PageNatedList<Brand>.Create(brands,pageIndex,3));
         }
 
         public IActionResult Create()
