@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P133Allup.DataAccessLayer;
+using P133Allup.Extentions;
+using P133Allup.Helpers;
 using P133Allup.Models;
 using P133Allup.ViewModels;
+using System.Net.Mime;
 
 namespace P133Allup.Areas.Manage.Controllers
 {
@@ -22,8 +25,8 @@ namespace P133Allup.Areas.Manage.Controllers
 		{
 			IQueryable<Category> categories = _context.Categories.Include(c => c.Products).Where(c => c.IsDeleted == false && c.IsMain);
 
-			return View(PageNatedList<Category>.Create(categories,pageindex,3));
-			
+			return View(PageNatedList<Category>.Create(categories, pageindex, 3));
+
 		}
 
 		public async Task<IActionResult> Create()
@@ -57,28 +60,24 @@ namespace P133Allup.Areas.Manage.Controllers
 					return View(category);
 				}
 
-				if (category.File?.ContentType != "image/jpeg")
+				if (!category.File.CheckFileContentType("image/jpeg"))
 				{
 					ModelState.AddModelError("File", "File uzantısı düzgün deyil!");
 					return View();
 				}
-				if ((category.File?.Length / 1024) > 300)
+				if (!category.File.CheckFileLength(300))
 				{
 					ModelState.AddModelError("File", "File Ölçüsü 300 kb çox ola bilmez!");
 					return View();
 				}
 				if (category.File != null)
 				{
-					string fileName = $"{Guid.NewGuid().ToString()}-{category.File.FileName}";
 
-					string filePath = Path.Combine(_env.WebRootPath, "assets", "images", fileName);
 
-					category.Image = fileName;
+					category.Image = await category.File.CreateFileAsync(_env, "assets", "images");
 
-					using (FileStream stream = new FileStream(filePath, FileMode.Create))
-					{
-						await category.File.CopyToAsync(stream);
-					}
+
+
 				}
 				category.ParentId = null;
 			}
@@ -115,19 +114,19 @@ namespace P133Allup.Areas.Manage.Controllers
 
 		public async Task<IActionResult> Detail(int? id)
 		{
-            if (id == null)
-            {
-                return BadRequest();
-            }
-            Category category = await _context.Categories
-                .Include(c => c.Children.Where(c => c.IsDeleted == false)).ThenInclude(c=>c.Products.Where(c=>c.IsDeleted==false))
-                .Include(c => c.Products.Where(c => c.IsDeleted == false))
-                .FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
+			if (id == null)
+			{
+				return BadRequest();
+			}
+			Category category = await _context.Categories
+				.Include(c => c.Children.Where(c => c.IsDeleted == false)).ThenInclude(c => c.Products.Where(c => c.IsDeleted == false))
+				.Include(c => c.Products.Where(c => c.IsDeleted == false))
+				.FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
 
-            if (category == null) return NotFound();
+			if (category == null) return NotFound();
 
-            return View(category);
-        }
+			return View(category);
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> Update(int? id)
@@ -168,28 +167,26 @@ namespace P133Allup.Areas.Manage.Controllers
 				{
 					if (category.File != null)
 					{
-						if (category.File?.ContentType != "image/jpeg")
+						if (category.File.CheckFileContentType("image/jpeg"))
 						{
 							ModelState.AddModelError("File", "File uzantısı düzgün deyil!");
-							return View();
+							return View(category);
 						}
-						if ((category.File?.Length / 1024) > 300)
+						if (category.File.CheckFileLength(300))
 						{
 							ModelState.AddModelError("File", "File Ölçüsü 300 kb çox ola bilmez!");
-							return View();
+							return View(category);
 						}
+						FileHelper.DeleteFile(dbCategory.Image, _env, "assets", "images");
+
+
+
 						if (category.File != null)
 						{
-							string fileName = $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}-{Guid.NewGuid().ToString()}-{category.File.FileName}";
 
-							string filePath = Path.Combine(_env.WebRootPath, "assets", "images", fileName);
+							dbCategory.Image = await category.File.CreateFileAsync(_env, "assets", "images");
 
-							dbCategory.Image = fileName;
 
-							using (FileStream stream = new FileStream(filePath, FileMode.Create))
-							{
-								await category.File.CopyToAsync(stream);
-							}
 						}
 					}
 
@@ -202,28 +199,23 @@ namespace P133Allup.Areas.Manage.Controllers
 						return View(category);
 					}
 
-					if (category.File?.ContentType != "image/jpeg")
+					if (category.File.CheckFileContentType("image/jpeg"))
 					{
 						ModelState.AddModelError("File", "File uzantısı düzgün deyil!");
 						return View();
 					}
-					if ((category.File?.Length / 1024) > 300)
+					if (category.File.CheckFileLength(300))
 					{
 						ModelState.AddModelError("File", "File Ölçüsü 300 kb çox ola bilmez!");
 						return View();
 					}
 					if (category.File != null)
 					{
-						string fileName = $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}-{Guid.NewGuid().ToString()}-{category.File.FileName}";
 
-						string filePath = Path.Combine(_env.WebRootPath, "assets", "images", fileName);
 
-						dbCategory.Image = fileName;
+						dbCategory.Image = await category.File.CreateFileAsync(_env, "assets", "images");
 
-						using (FileStream stream = new FileStream(filePath, FileMode.Create))
-						{
-							await category.File.CopyToAsync(stream);
-						}
+
 					}
 
 				}
@@ -243,6 +235,8 @@ namespace P133Allup.Areas.Manage.Controllers
 					ModelState.AddModelError("ParentId", "Düzgün Üst kateqoriya  seçilməlidir!");
 					return View(category);
 				}
+				FileHelper.DeleteFile(dbCategory.Image, _env, "assets", "images");
+
 				dbCategory.Image = null;
 				dbCategory.ParentId = category.ParentId;
 
@@ -269,7 +263,7 @@ namespace P133Allup.Areas.Manage.Controllers
 				return BadRequest();
 			}
 			Category category = await _context.Categories
-				.Include(c => c.Children.Where(c=>c.IsDeleted==false))
+				.Include(c => c.Children.Where(c => c.IsDeleted == false))
 				.Include(c => c.Products.Where(c => c.IsDeleted == false))
 				.FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
 
@@ -282,25 +276,25 @@ namespace P133Allup.Areas.Manage.Controllers
 
 		public async Task<IActionResult> DeleteCategory(int? id)
 		{
-            if (id == null)
-            {
-                return BadRequest();
-            }
-            Category category = await _context.Categories
-                .Include(c => c.Children.Where(c => c.IsDeleted == false))
-                .Include(c => c.Products.Where(c => c.IsDeleted == false))
-                .FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
+			if (id == null)
+			{
+				return BadRequest();
+			}
+			Category category = await _context.Categories
+				.Include(c => c.Children.Where(c => c.IsDeleted == false))
+				.Include(c => c.Products.Where(c => c.IsDeleted == false))
+				.FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
 
-            if (category == null) return NotFound();
+			if (category == null) return NotFound();
 
-			category.IsDeleted= true;
-			category.DeletedAt= DateTime.UtcNow.AddHours(4);
+			category.IsDeleted = true;
+			category.DeletedAt = DateTime.UtcNow.AddHours(4);
 			category.DeletedBy = "System";
 
 			await _context.SaveChangesAsync();
 
 			return RedirectToAction("Index");
-        }
+		}
 
 
 

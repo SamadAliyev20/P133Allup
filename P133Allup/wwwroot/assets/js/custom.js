@@ -1,8 +1,6 @@
 ﻿$(document).ready(function () {
 
-    $('.productCount').keyup(function () {
-        
-
+    $(document).on('click', '.productCount', function () {
         let count = $(this).val();
         let productId = $(this).attr('data-productId');
 
@@ -11,6 +9,7 @@
         }).then(data => {
             $(".productTable").html(data);
         })
+
     })
 
     $('.addToBasket').click(function myfunction(e) {

@@ -15,25 +15,41 @@ namespace P133Allup.Models
         public double ExTax { get; set; }
         public int Count { get; set; }
         [StringLength(1000)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [StringLength(4,MinimumLength =4)]
-        public string Seria { get; set; }
+        public string? Seria { get; set; }
         public int Code { get; set; }
         public bool IsNewArrival { get; set; }
         public bool IsBestSeller { get; set; }
         public bool IsFeatured { get; set; }
         [StringLength(255)]
-        [Required]
-        public string MainImage { get; set; }
+        public string? MainImage { get; set; }
         [StringLength(255)]
-        [Required]
-        public string HoverImage { get; set; }
+        public string? HoverImage { get; set; }
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
-        public int BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public Category? Category { get; set; }
+        public Brand? Brand { get; set; }
 
-        public IEnumerable<ProductImage> ProductImages { get; set; }
-    }
+		public int BrandId { get; set; }
+
+		public IEnumerable<ProductImage>? ProductImages { get; set; }
+
+        public IEnumerable<ProductTag>? ProductTags { get; set; }
+
+        [NotMapped]
+        public IEnumerable<byte>? TagIds { get; set; }
+
+		[NotMapped]
+
+        public IEnumerable<IFormFile>? Files { get; set; }
+
+		[NotMapped]
+
+        public IFormFile? MainFile { get; set; }
+
+		[NotMapped]
+
+		public IFormFile? HoverFile { get; set; }
+	}
 }
