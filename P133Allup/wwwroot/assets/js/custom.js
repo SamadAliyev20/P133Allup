@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    $(document).on('click', '.productCount', function () {
+    $(document).on('keyup', '.productCount', function () {
         let count = $(this).val();
         let productId = $(this).attr('data-productId');
 

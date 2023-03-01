@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P133Allup.DataAccessLayer;
 using P133Allup.Models;
 using P133Allup.ViewModels;
+using System.Data;
 using System.Drawing.Drawing2D;
 
 namespace P133Allup.Areas.Manage.Controllers
 {
     [Area("manage")]
-    public class BrandController : Controller
+	[Authorize(Roles = "SuperAdmin,Admin")]
+	public class BrandController : Controller
     {
         private readonly AppDbContext _context;
 
@@ -25,12 +28,14 @@ namespace P133Allup.Areas.Manage.Controllers
             return View(PageNatedList<Brand>.Create(brands,pageIndex,3));
         }
 
-        public IActionResult Create()
+		[Authorize(Roles = "SuperAdmin,Admin")]
+		public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public async Task <IActionResult> Create(Brand brand)
+		[Authorize(Roles = "SuperAdmin,Admin")]
+		public async Task <IActionResult> Create(Brand brand)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +58,8 @@ namespace P133Allup.Areas.Manage.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(int? id)
+		[Authorize(Roles = "SuperAdmin,Admin")]
+		public async Task<IActionResult> Detail(int? id)
         {
 
             if (id == null) return BadRequest();
@@ -68,8 +74,9 @@ namespace P133Allup.Areas.Manage.Controllers
         }
 
         [HttpGet]
-        
-        public async Task <IActionResult> Update(int? id)
+		[Authorize(Roles = "SuperAdmin,Admin")]
+
+		public async Task <IActionResult> Update(int? id)
         {
             if (id==null) return BadRequest();
 
@@ -81,8 +88,9 @@ namespace P133Allup.Areas.Manage.Controllers
         }
 
         [HttpPost]
+		[Authorize(Roles = "SuperAdmin,Admin")]
 
-        public async Task<IActionResult> Update(int? id,Brand brand)
+		public async Task<IActionResult> Update(int? id,Brand brand)
         {
             if (!ModelState.IsValid)
             {
@@ -114,8 +122,9 @@ namespace P133Allup.Areas.Manage.Controllers
         }
 
         [HttpGet]
+		[Authorize(Roles = "SuperAdmin,Admin")]
 
-        public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return BadRequest();
 
@@ -128,7 +137,8 @@ namespace P133Allup.Areas.Manage.Controllers
             return View(brand);
         }
         [HttpGet]
-        public async Task<IActionResult> DeleteBrand(int? id)
+		[Authorize(Roles = "SuperAdmin,Admin")]
+		public async Task<IActionResult> DeleteBrand(int? id)
         {
             if (id == null) return BadRequest();
 

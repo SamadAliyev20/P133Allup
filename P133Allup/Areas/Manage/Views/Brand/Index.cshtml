@@ -7,9 +7,13 @@
 <div class="d-flex flex-row">
 	<div class="col-lg-2">
 		<h1 class="h3 mb-3 text-gray-800">Brand Page</h1>
+		<h4>@User.Identity.Name</h4>
 	</div>
 	<div class="col-lg-2">
-		<a class="btn btn-primary" asp-action="create" asp-controller="brand" asp-area="manage">Create</a>
+		@if (User.IsInRole("SuperAdmin"))
+		{
+			<a class="btn btn-primary" asp-action="create" asp-controller="brand" asp-area="manage">Create</a>
+		}
 	</div>
 </div>
 <div class="row">

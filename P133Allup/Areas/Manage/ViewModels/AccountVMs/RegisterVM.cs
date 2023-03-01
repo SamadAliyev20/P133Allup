@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿ using System.ComponentModel.DataAnnotations;
 
 namespace P133Allup.Areas.Manage.ViewModels.AccountVMs
 {

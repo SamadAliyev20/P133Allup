@@ -38,6 +38,8 @@ builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllerRoute(
             name: "areas",
