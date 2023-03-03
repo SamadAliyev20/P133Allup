@@ -2,42 +2,46 @@
 
 @foreach (BasketVM basketVM in Model)
 {
-    <tr>
-        <td>
-            <div class="product-image">
-                <img src="assets/images/product/@basketVM.Image" alt="cart">
-            </div>
-        </td>
-        <td>
-            <div class="product-title">
-                <h4 class="title"><a href="single-product.html">@basketVM.Title</a></h4>
-            </div>
-        </td>
-        <td>
-            <div class="product-price">
-                <span class="price">€@basketVM.Price</span>
-            </div>
-        </td>
-        <td>
-            <div class="product-quantity">
-                <div class="quantity mt-15 d-flex">
-                    <button type="button" class="sub"><i class="fal fa-minus"></i></button>
-                    <input class="productCount" data-productId="@basketVM.Id" type="text" value="@basketVM.Count" />
-                    <button type="button" ><i class="fal fa-plus"></i></button>
-                </div>
-            </div>
-        </td>
-        <td>
-            <div class="product-total">
-                <span class="total-amount">€@(basketVM.Count * basketVM.Price)</span>
-            </div>
-        </td>
-        <td>
-            <div class="product-delete">
-                <a href="#"><i class="fal fa-trash-alt"></i></a>
-            </div>
-        </td>
-    </tr>
-
+	<tr>
+		<td>
+			<div class="product-image">
+				<img src="assets/images/product/@basketVM.Image" alt="cart">
+			</div>
+		</td>
+		<td>
+			<div class="product-title">
+				<h4 class="title"><a href="single-product.html">@basketVM.Title</a></h4>
+			</div>
+		</td>
+		<td>
+			<div class="product-price">
+				<span class="price">€@basketVM.Price</span>
+			</div>
+		</td>
+		<td>
+			<div class="product-quantity">
+				<div class="quantity mt-15 d-flex">
+					<button type="button" class="sub"><i class="fal fa-minus"></i></button>
+					<input class="productCount" data-productId="@basketVM.Id" type="text" value="@basketVM.Count" />
+					<button type="button"><i class="fal fa-plus"></i></button>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="product-total">
+				<span class="total-amount">€@(basketVM.Count * basketVM.Price)</span>
+			</div>
+		</td>
+		<td>
+			<div data-productId="@basketVM.Id" class="product-delete">
+				<a href="#"><i class="fal fa-trash-alt"></i></a>
+			</div>
+		</td>
+	</tr>
 }
+
+
 <h2 class="cart-total price-inline" style="float:right">Total Price:€@(Model.Sum(b => b.Count * b.Price) + @Model.Sum(b => b.Count * b.ExTax))</h2>
+
+
+

@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
 
-    $(document).on('keyup', '.productCount', function () {
+    $(document).on('keyup', '.productCount', function (e) {
+        e.preventDefault();
         let count = $(this).val();
         let productId = $(this).attr('data-productId');
 
@@ -24,6 +25,26 @@
                 $('.header-cart').html(data)
 
             })
+    })
+
+    
+    $(document).on('click', '.product-delete', function (e) {
+        e.preventDefault();
+        let productId = $(this).attr('data-productId');
+        fetch('/Basket/DeleteBasket/' + productId).then(res => {
+            return res.text();
+        }).then(data => {
+            
+            $('.productTable').html(data)   
+            
+        })
+        fetch('/Basket/GetBasketForCart/').then(res => {
+            res.text();
+        }).then(data => {
+                $('.header-cart').html(data)
+        })
+
+        
     })
 
     $("#productModal").click(function (e) {

@@ -54,15 +54,13 @@
 											<span asp-validation-for="Email" class="text text-danger"></span>
 										</div>
 										<div class="form-group">
-											<input asp-for="Password"  class="form-control form-control-user"
-												   placeholder="Password">
+											<input asp-for="Password" id="showpassword" class="form-control form-control-user"
+												   placeholder="Password" /> <span><i onclick="mypass()" class="fa-regular fa-eye"></i></span>
 											<span asp-validation-for="Password" class="text text-danger"></span>
-											
-											
 										</div>
 										<div class="form-group">
 											<div class="custom-control custom-checkbox small">
-												<input asp-for="RemindMe" type="checkbox" class="custom-control-input" >
+												<input asp-for="RemindMe" type="checkbox" class="custom-control-input">
 												<label class="custom-control-label" asp-for="RemindMe">
 													Remember
 													Me
@@ -100,6 +98,20 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="~/manage/js/sb-admin-2.min.js"></script>
+
+	<script>
+
+		function mypass() {
+
+			var pass = document.getElementById("showpassword")
+			if (pass.type === "password") {
+				pass.type = "text";
+			}
+			else {
+				pass.type = "password";
+			}
+		}
+	</script>
 
 </body>
 
