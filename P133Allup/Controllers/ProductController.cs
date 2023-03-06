@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using P133Allup.DataAccessLayer;
 using P133Allup.Models;
+using P133Allup.ViewModels;
 using P133Allup.ViewModels.BasketViewModels;
 
 namespace P133Allup.Controllers
@@ -16,9 +17,11 @@ namespace P133Allup.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex = 1)
         {
-            return View();
+            IQueryable<Product> products = _context.Products.Where(p=>p.IsDeleted==false);
+
+            return View(PageNatedList<Product>.Create(products,pageIndex,10));
         }
 
         public async Task<IActionResult> ProductModal(int? id)

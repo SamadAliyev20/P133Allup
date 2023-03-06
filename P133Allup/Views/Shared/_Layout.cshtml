@@ -29,7 +29,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/png">
 
 
     <!-- CSS
@@ -37,25 +37,25 @@
 
     <!--===== Vendor CSS (Bootstrap & Icon Font) =====-->
 
-    <link rel="stylesheet" href="assets/css/plugins/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/ionicons.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/fontawesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/ionicons.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/fontawesome.min.css">
 
     <!--===== Plugins CSS (All Plugins Files) =====-->
 
-    <link rel="stylesheet" href="assets/css/plugins/slick.css">
-    <link rel="stylesheet" href="assets/css/plugins/animate.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/default.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/slick.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/animate.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/default.css">
 
     <!--====== Main Style CSS ======-->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
 
 
     <!--====== Use the minified version files listed below for better performance and remove the files listed above ======-->
 
-    <!-- <link rel="stylesheet" href="assets/css/vendor/plugins.min.css">
-    <link rel="stylesheet" href="assets/css/style.min.css"> -->
+    <!-- <link rel="stylesheet" href="~/assets/css/vendor/plugins.min.css">
+    <link rel="stylesheet" href="~/assets/css/style.min.css"> -->
 
 </head>
 
@@ -87,49 +87,49 @@
             <div class="row brand-active">
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-1.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
                 </div>
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-2.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
                 </div>
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-3.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
                 </div>
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-4.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
                 </div>
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-5.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
                 </div>
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-6.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
                 </div>
                 <div class="col-lg-2">
                     <div class="single-brand">
-                        <a href="#">
+                        <a href="~/#">
                             <img src="~/assets/images/brand/brand-4.jpg" alt="brand">
                         </a>
                     </div> <!-- single brand -->
@@ -241,7 +241,7 @@
 
     <!--====== BACK TOP TOP PART START ======-->
 
-    <a href="#" class="back-to-top"><i class="ion-android-arrow-up"></i></a>
+    <a href="~/#" class="back-to-top"><i class="ion-android-arrow-up"></i></a>
 
     <!--====== BACK TOP TOP PART ENDS ======-->
 
@@ -251,6 +251,7 @@
     <!--====== Vendors js ======-->
     <script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="~/assets/js/vendor/modernizr-3.7.1.min.js"></script>
+    @RenderSection("Scripts",false);
 
     <!--====== Plugins js ======-->
     <script src="~/assets/js/plugins/popper.min.js"></script>

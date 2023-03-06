@@ -4,24 +4,31 @@
     {
         public PageNatedList(List<T> queries,int pageindex,int totalPage)
         {
-            PageIndex= pageindex;
-            TotalPage= totalPage;
-
-            int start = PageIndex - 1;
-            int end = PageIndex + 1;
-
-            if (start <=0)
+            if (totalPage >= 5)
             {
-                end = end - (start - 1);
-                start= 1;
-            }
-            if (end > TotalPage)
-            {
-                end = TotalPage;
-                start=totalPage- 2;
+				PageIndex = pageindex;
+				TotalPage = totalPage;
+
+				int start = PageIndex - 1;
+				int end = PageIndex + 1;
+
+				if (start <= 0)
+				{
+					end = end - (start - 1);
+					start = 1;
+				}
+				if (end > TotalPage)
+				{
+					end = TotalPage;
+					start = totalPage - 2;
+				}
+				StartPage = start;
+				EndPage = end;
 			}
-            StartPage=start;
-            EndPage=end;
+			else
+			{
+				StartPage= 1; EndPage= totalPage;
+			}
            
 
 
