@@ -19,8 +19,9 @@
                                 <li><a class="addToBasket" data-id="@product.Id" href="#"><i class="icon ion-bag"></i></a></li>
                                 <li><a href="#"><i class="icon ion-android-favorite-outline"></i></a></li>
                                 <li><a href="#"><i class="icon ion-android-options"></i></a></li>
-                                <li><a data-toggle="modal" data-target="#productQuickModal" 
-                                    asp-action="productModal" asp-controller="Product" asp-route-id="@product.Id"><i class="icon ion-android-open"></i>  </a></li>
+                                <li><a data-toggle="modal" data-target="#productQuickModal"
+                               asp-action="ProductModal" asp-controller="Product" asp-route-id="@product.Id"><i class="icon ion-android-open"></i>  </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="product-content">
@@ -39,7 +40,7 @@
                             <div class="product-price">
                                 @if (product.DiscountedPrice > 0)
                                 {
-                                    <span class="regular-price ">€@product.Price</span>
+                                    <span class="regular-price">€@product.Price</span>
                                     <span class="price-sale">€@product.DiscountedPrice</span>
                                 }
                                 else

@@ -37,6 +37,7 @@ namespace P133Allup.Models
 
         public IEnumerable<ProductTag>? ProductTags { get; set; }
 
+        public IEnumerable<Review> Reviews { get; set; }
         [NotMapped]
         public IEnumerable<byte>? TagIds { get; set; }
 

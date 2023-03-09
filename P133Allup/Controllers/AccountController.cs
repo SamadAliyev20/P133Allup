@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using P133Allup.DataAccessLayer;
 using P133Allup.Models;
 using P133Allup.ViewModels.AccountViewModels;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -10,14 +13,16 @@ namespace P133Allup.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly AppDbContext _context;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+		public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context)
+		{
+			_userManager = userManager;
+			_signInManager = signInManager;
+			_context = context;
+		}
 
-        public IActionResult Register()
+		public IActionResult Register()
         {
             return View();
         }
@@ -113,6 +118,59 @@ namespace P133Allup.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Member")]
+
+        public async Task<IActionResult> Profile()
+        {
+            AppUser appUser = await _userManager.Users
+                .Include(u=>u.Addresses.Where(a=>a.IsDeleted== false))
+                .FirstOrDefaultAsync(u=>u.NormalizedUserName == User.Identity.Name.ToUpperInvariant());
+
+            ProfileVM profileVM = new ProfileVM
+            {
+                Addresses = appUser.Addresses
+
+            };
+            return View(profileVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Member")]
+
+        public async Task<IActionResult> AddAddress(Address address)
+        {
+			AppUser appUser = await _userManager.Users
+			   .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+			   .FirstOrDefaultAsync(u => u.NormalizedUserName == User.Identity.Name.ToUpperInvariant());
+
+			ProfileVM profileVM = new ProfileVM
+			{
+				Addresses = appUser.Addresses
+
+			};
+
+			if (!ModelState.IsValid)
+            
+            { 
+
+                return View(nameof(Profile),profileVM);
+            }
+
+            if (address.IsMain && appUser.Addresses != null && appUser.Addresses.Count() > 0 && appUser.Addresses.Any(a=>a.IsMain))
+            {
+                appUser.Addresses.FirstOrDefault(a => a.IsMain).IsMain = false;
+            }
+            address.UserId = appUser.Id;
+            address.CreatedBy = $"{appUser.Name} {appUser.SurName}";
+            address.CreatedAt= DateTime.UtcNow.AddHours(4);
+
+            await  _context.Addresses.AddAsync(address);
+            await _context.SaveChangesAsync();
+
+           return RedirectToAction(nameof(Profile));
         }
 
 

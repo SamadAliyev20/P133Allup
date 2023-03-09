@@ -19,7 +19,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="setting">
                                         @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
                                         {
-                                            <li><a asp-controller="Account" asp-action="">My account</a></li>
+                                            <li><a asp-controller="Account" asp-action="Profile">My account</a></li>
                                             <li><a asp-action="Index" asp-controller="Shop">Checkout</a></li>
                                             <li><a asp-controller="Account"  asp-action="LogOut">Sign Out</a></li>
                                         }

@@ -20,5 +20,13 @@ namespace P133Allup.DataAccessLayer
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductTag> ProductTags { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }

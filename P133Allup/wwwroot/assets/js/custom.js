@@ -1,4 +1,10 @@
-﻿$(document).ready(function () {
+﻿    $(document).ready(function () {
+    $(document).on('click', '.addAddress', function (e) {
+        e.preventDefault();
+        $('.addressContainer').addClass('d-none');
+        $('.addressForm').removeClass('d-none');
+
+    })
 
     $(document).on('keyup', '.productCount', function (e) {
         e.preventDefault();
