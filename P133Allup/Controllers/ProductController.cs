@@ -126,7 +126,7 @@ namespace P133Allup.Controllers
 
             return PartialView("_SearchPartial",products);
         }
-        public IActionResult ChangeBasketProductCount(int? id, int count)
+        public async Task<IActionResult> ChangeBasketProductCount(int? id, int count)
         {
             if (id == null)
             {

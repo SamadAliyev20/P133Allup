@@ -163,7 +163,7 @@ namespace P133Allup.Controllers
             {
                 appUser.Addresses.FirstOrDefault(a => a.IsMain).IsMain = false;
             }
-            address.UserId = appUser.Id;
+            address.AppUserId = appUser.Id;
             address.CreatedBy = $"{appUser.Name} {appUser.SurName}";
             address.CreatedAt= DateTime.UtcNow.AddHours(4);
 

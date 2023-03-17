@@ -1,6 +1,15 @@
 ﻿$(document).ready(function () {
+    $(document).on('click', '.deleteImage', function (e) {
+        e.preventDefault();
+        let url = $('.deleteImage').attr('href');
+        let imageId = $('.deleteImage').attr('data-imageId');
+        fetch(url + "?imageId=" + imageId)
+            .then(res => res.text())
+            .then(data => {
+                $('.productImages').html(data)
+            })
+    })
     let isMain = $('#IsMain').is(':checked');
-
     if (isMain) {
         $('#fileInput').removeClass('d-none');
         $('#parentList').addClass('d-none');
@@ -8,7 +17,6 @@
         $('#fileInput').addClass('d-none');
         $('#parentList').removeClass('d-none');
     }
-
     $('#IsMain').click(function () {
         let isMain = $(this).is(':checked');
 

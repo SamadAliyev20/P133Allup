@@ -17,7 +17,7 @@ namespace P133Allup.Models
         public string? AddressLine { get; set; }
 
         public bool IsMain { get; set; }
-        public string? UserId { get; set; }
+        public string? AppUserId { get; set; }
 
         public AppUser? AppUser { get; set; }
     }

@@ -209,7 +209,10 @@
                 <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div class="product-rating-content">
                         <div class="average-rating">
-                        <h4 class="rating-overall">@(Model.Product.Reviews.Sum(r => r.Start) / @Model.Product.Reviews.Count()) <span>(Overall)</span></h4>
+                        @if (Model.Product.Reviews.Count() > 0)
+                        {
+                            <h4 class="rating-overall">@(Model.Product.Reviews.Sum(r => r.Start) / @Model.Product.Reviews.Count()) <span>(Overall)</span></h4>
+                        }
                             <p>Based on @Model.Product.Reviews.Count() Comments</p>
                         </div>
                         <div class="rating-list d-flex flex-wrap">
